@@ -1,0 +1,26 @@
+* Quyền * 
+- Người dùng có 3 quyền:
++ Admin: Quản lý all, cấp quyền, chỉnh config ...
++ Quản lý: Phê duyệt đơn xin nghỉ của nhân viên, thao tác lịch làm việc và chấm công của nhân viên
++ Nhân viên: Xem lịch, bảng chấm công cá nhân, gửi đơn xin nghỉ ...
+
+* Người dùng (Staff) *
+- Code: Mã nhân viên
+- 1 người có 1 vị trí: Tech lead, tester, dev, hr, ...
+- Phòng ban cũng tương tự
+
+* Ca làm *
+- Time_in - Time_out: Giờ vào - Giờ ra
+- Start_time_off - End_time_off: Giờ nghỉ trưa
+- Type_shift: 0 - ca ngày, 1 - ca đêm
+- Total_time: Số giờ làm của 1 ca
+- Num_of_works: Số công (VD: 4h - nửa công, 8h - 1 công)
+
+* Đơn xin nghỉ (Dayoffs) * 
+- Start_date - End_date: Nghỉ từ bao giờ -> bao Giờ
+- Reason: Lí do Nghỉ
+- ManageId: Người duyệt đơn
+- Loại đơn: nghỉ phép, nghỉ ốm, nghỉ có phép, nghỉ không lương
+
+* Theo dõi (Timekeeping) *
+- Ghi lại thời gian ra vào chi tiết như ngày, giờ vào, giờ ra của nhân viên trong ca làm
