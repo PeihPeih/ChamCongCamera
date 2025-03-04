@@ -1,17 +1,30 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Staff from "../models/Staff.js";
-// Đăng ký nhân viên (Register)
 export const register = async (req, res) => {
   try {
+    console.log(req.body);
+
+    if (
+      !req.body.Fullname ||
+      !req.body.Username ||
+      !req.body.Password ||
+      !req.body.Email
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields!" });
+    }
+
     // Băm mật khẩu
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const hash = bcrypt.hashSync(req.body.Password, salt);
 
     // Tạo nhân viên mới
     const newStaff = new Staff({
       Fullname: req.body.Fullname,
       Username: req.body.Username,
+      Code: req.body.Code,
       Password: hash,
       Email: req.body.Email,
       Gender: req.body.Gender,
@@ -35,9 +48,9 @@ export const register = async (req, res) => {
 
 // Đăng nhập nhân viên (Login)
 export const login = async (req, res) => {
-  const username = req.body.Username;
+  const email = req.body.Email;
   try {
-    const staff = await Staff.findOne({ where: { Username: username } });
+    const staff = await Staff.findOne({ where: { Email: email } });
     if (!staff) {
       return res.status(404).json({
         success: false,

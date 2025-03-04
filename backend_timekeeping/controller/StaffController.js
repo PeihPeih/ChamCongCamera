@@ -25,9 +25,62 @@ export const getStaffById = async (req, res) => {
 // Thêm nhân viên mới
 export const createStaff = async (req, res) => {
   try {
-    const staff = await Staff.create(req.body);
-    res.status(201).json(staff);
+    // Kiểm tra xem người dùng có phải là admin không (bạn có thể thay đổi logic tùy vào cách xác thực)
+    if (!req.user || req.user.role !== "admin") {
+      return res.status(403).json({ error: "Không có quyền tạo nhân viên" });
+    }
+
+    // Kiểm tra dữ liệu đầu vào (validate dữ liệu)
+    const {
+      Fullname,
+      Code,
+      Email,
+      Username,
+      Password,
+      Gender,
+      DayOfBirth,
+      PositionID,
+      DepartmentID,
+      RoleID,
+    } = req.body;
+
+    if (
+      !Fullname ||
+      !Code ||
+      !Email ||
+      !Username ||
+      !Password ||
+      !Gender ||
+      !DayOfBirth ||
+      !PositionID ||
+      !DepartmentID ||
+      !RoleID
+    ) {
+      return res.status(400).json({ error: "Thiếu thông tin bắt buộc" });
+    }
+
+    // Băm mật khẩu
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(Password, salt);
+
+    // Tạo nhân viên mới
+    const newStaff = await Staff.create({
+      Fullname,
+      Code,
+      Email,
+      Username,
+      Password: hash,
+      Gender,
+      DayOfBirth,
+      PositionID,
+      DepartmentID,
+      RoleID,
+    });
+
+    // Trả về nhân viên mới đã được tạo
+    res.status(201).json(newStaff);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Lỗi khi tạo nhân viên" });
   }
 };

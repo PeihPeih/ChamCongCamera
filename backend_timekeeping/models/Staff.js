@@ -10,14 +10,24 @@ const Staff = sequelize.define(
     ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     Fullname: { type: DataTypes.STRING(255), allowNull: false },
     Code: { type: DataTypes.STRING(255), allowNull: false },
-    Created_at: { type: DataTypes.DATE, allowNull: false },
-    Updated_at: { type: DataTypes.DATE, allowNull: false },
     Username: { type: DataTypes.STRING(255), allowNull: false },
     Password: { type: DataTypes.STRING(255), allowNull: false },
     Gender: { type: DataTypes.STRING(255), allowNull: false },
     DayOfBirth: { type: DataTypes.DATE, allowNull: false },
+    Email: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true, // Kiểm tra xem có phải định dạng email hợp lệ không
+      },
+    },
   },
-  { timestamps: false }
+  {
+    timestamps: true,
+    createdAt: "Created_at",
+    updatedAt: "Updated_at",
+  }
 );
 
 Staff.belongsTo(Position, { foreignKey: "PositionID" });
